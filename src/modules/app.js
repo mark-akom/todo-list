@@ -6,7 +6,9 @@ const todoApp = (function () {
     }
 
     function createTask(title, description, dueDate, priority) {
-        return {title, description, dueDate, priority};
+        const id = new Date().getTime() + '';
+        
+        return {id, title, description, dueDate, priority};
     }
 
     function returnAllProjects() {
@@ -16,6 +18,8 @@ const todoApp = (function () {
     function saveTask(task, folderName = 'defaultFolder') {
         projects[folderName].push(task);
     }
+
+    // todo - functions for changing status, priority and editing
 
     return {
         createTask,
