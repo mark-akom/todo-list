@@ -1,6 +1,26 @@
+/* google fonts - Outfit font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
+
 /* resets */
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* styling of the header section */
+
+.app-header {
+    border: 1px solid blue;
+    padding: 12px 0 12px 40px;
+    
+}
+
+.app-heading {
+    font-weight: 600;
+    font-size: 32px;
 }
