@@ -24,3 +24,18 @@ body {
     font-weight: 600;
     font-size: 32px;
 }
+
+/* styling of the content section */
+
+.app-sidebar {
+    border: 1px solid green;
+    padding: 20px 0 20px 40px;
+}
+
+.nav-links li{
+    list-style: none;
+    font-size: 19px;
+    padding: 8px 0;
+    font-weight: 400;
+    cursor: pointer;
+}
