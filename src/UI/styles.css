@@ -16,20 +16,30 @@ body {
 
 .app-header {
     border: 1px solid blue;
-    padding: 12px 0 12px 40px;
-    
+    height: 10vh;
+    display: flex;
+    align-items: center;
 }
 
 .app-heading {
     font-weight: 600;
     font-size: 32px;
+    padding-left: 40px;
 }
 
 /* styling of the content section */
 
+.content-body {
+    border: 1px solid;
+    display: flex;
+    height: 90vh;
+}
+
 .app-sidebar {
     border: 1px solid green;
-    padding: 20px 0 20px 40px;
+    flex-basis: 22%;
+    padding-left: 40px;
+    padding-top: 20px;
 }
 
 .nav-links li{
@@ -38,4 +48,16 @@ body {
     padding: 8px 0;
     font-weight: 400;
     cursor: pointer;
+    margin-bottom: 4px;
+}
+
+.content {
+    border: 1px solid red;
+    flex-basis: 78%;
+    padding-top: 30px;
+    padding-left: 40px;
+}
+
+.content p {
+    font-size: 40px;
 }

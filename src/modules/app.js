@@ -2,7 +2,7 @@
 
 const todoApp = (function () {
     const projects = {
-        defaultFolder:  [{a: 'n'}]
+        defaultFolder:  []
     }
 
     function createTask(title, description, dueDate, priority) {
@@ -56,4 +56,27 @@ const todoApp = (function () {
     }
 })()
 
-export { todoApp };
+const uiControl = (function() {
+    function displayTask() {
+        const projects = todoApp.returnAllProjects();
+        const projectNames = Object.keys(projects);
+        let taskCount = 0;
+        projectNames.forEach(name => {
+            if(projects[name].length > 0) {
+                taskCount++;
+            }
+        });
+
+        if (taskCount > 0) {
+            return 'Some task available';
+        } else {
+            return 'Looks like you are free. Add a new task';
+        }
+    }
+
+    return {
+        displayTask,
+    }
+})()
+
+export { todoApp, uiControl };
