@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/mark-akom/todo-list#readme",
   "devDependencies": {
+    "css-loader": "^6.5.1",
+    "style-loader": "^3.3.1",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1"
   }
