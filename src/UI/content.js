@@ -1,4 +1,5 @@
 import { todoApp } from "../modules/app";
+import { uiControl } from "../modules/app";
 
 function createContent() {
     // needed elements and their css classes
@@ -35,11 +36,17 @@ function createContent() {
     addProjectBtn.addEventListener('click', () => {
         let projectName = prompt('Enter the project name.');
         todoApp.createProject(projectName);
-        console.log('clicked');
+
+        const projectList = document.querySelector('.project-list');
+        const parent = projectList.parentNode;
+        const lastChild = parent.lastElementChild;
+        parent.removeChild(projectList);
+        parent.insertBefore(uiControl.listProjects(), lastChild);
     })
 
 
     projectSection.appendChild(projectTitle);
+    projectSection.appendChild(uiControl.listProjects());
     projectSection.appendChild(addProjectBtn);
 
 

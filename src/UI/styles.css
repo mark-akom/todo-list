@@ -67,6 +67,17 @@ body {
     font-weight: 400;
 }
 
+.project-list {
+    padding-left: 16px;
+    list-style: none;
+}
+
+.project-list li {
+    font-size: 17px;
+    padding: 4px;
+    margin-top: 4px;
+}
+
 .add-project-btn {
     display: block;
     margin-left: auto;

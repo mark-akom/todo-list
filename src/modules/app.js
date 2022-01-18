@@ -80,8 +80,26 @@ const uiControl = (function() {
         }
     }
 
+    function listProjects() {
+        let projectNames = Object.keys(todoApp.returnAllProjects());
+
+        // build the projects list for the sidebar;
+        const projectUl = document.createElement('ul');
+        projectUl.classList.add('project-list');
+
+        projectNames.forEach(name => {
+            if (name !== 'defaultFolder') {
+                const li = document.createElement('li');
+                li.textContent = name;
+                projectUl.appendChild(li);
+            }
+        })
+        return projectUl;
+    }
+
     return {
         displayTask,
+        listProjects,
     }
 })()
 
