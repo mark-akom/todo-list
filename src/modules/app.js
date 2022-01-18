@@ -28,6 +28,11 @@ const todoApp = (function () {
 
     // todo - functions for changing status, priority and editing
 
+    function createProject(name) {
+        projects[name] = []
+        console.log(projects);
+    }
+
     function updateStatus(projectName, taskId) {
         const project = projects[projectName];
         let task = project.filter(item => item.id === taskId)[0];
@@ -53,6 +58,7 @@ const todoApp = (function () {
         updateStatus,
         changePriority,
         deleteTask,
+        createProject,
     }
 })()
 

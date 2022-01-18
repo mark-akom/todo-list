@@ -61,3 +61,22 @@ body {
 .content p {
     font-size: 40px;
 }
+
+.project-title {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.add-project-btn {
+    display: block;
+    margin-left: auto;
+    padding: 4px 12px;
+    font-family: inherit;
+    font-size: 16px;
+    background-color: transparent;
+    border: 1px solid gray;
+    border-radius: 4px;
+    margin-top: 12px;
+    margin-right: 12px;
+    cursor: pointer;
+}
