@@ -51,14 +51,14 @@ body {
     margin-bottom: 4px;
 }
 
-.content {
+.main-content {
     border: 1px solid red;
     flex-basis: 78%;
     padding-top: 30px;
     padding-left: 40px;
 }
 
-.content p {
+.main-content p {
     font-size: 40px;
 }
 

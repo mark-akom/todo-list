@@ -49,11 +49,18 @@ function createContent() {
     projectSection.appendChild(uiControl.listProjects());
     projectSection.appendChild(addProjectBtn);
 
+    // the main content section
+    const mainDiv = document.createElement('div');
+    mainDiv.classList.add('main-content');
+
+    mainDiv.appendChild(uiControl.displayHome());
+
 
     // append the various element to their parents
     sideBarSection.appendChild(navLinks);
     sideBarSection.appendChild(projectSection);
     contentSection.appendChild(sideBarSection);
+    contentSection.appendChild(mainDiv);
 
     return contentSection;
 }
