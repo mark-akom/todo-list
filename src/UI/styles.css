@@ -58,7 +58,7 @@ body {
     padding-left: 40px;
 }
 
-.main-content p {
+ p {
     font-size: 40px;
 }
 
@@ -78,7 +78,7 @@ body {
     margin-top: 4px;
 }
 
-.add-project-btn, .add-task-btn {
+.add-project-btn, .add-task-btn, .submit-task {
     display: block;
     margin-left: auto;
     padding: 4px 12px;
@@ -112,3 +112,52 @@ body {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
+
+  /* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 40px;
+    border: 1px solid #888;
+    width: 60%; /* Could be more or less, depending on screen size */
+}
+
+  /* styling of the add task form */
+
+form {
+    font-family: inherit;
+    padding-left: 50px;
+}
+
+form .form-data-container label, form .form-data-container p {
+    display: block;
+    font-size: 19px;
+    width: 120px;
+}
+
+form .form-data-container {
+    display: flex;
+    margin-top: 12px ;
+}
+
+form .form-data-container #title, form .form-data-container #description {
+    width: 350px;
+    padding: 4px 8px;
+    display: block;
+    font-family: inherit;
+    font-size: 19px;
+}
+
+form .form-data-container .priority-radio-btn-group label,
+form .form-data-container .save-to-radio-btn-group label {
+    display: inline-block;
+    width: auto;
+    margin: 0 24px 0 4px;
+}
+
+.submit-task {
+    margin: 0;
+    margin-top: 24px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

@@ -107,9 +107,11 @@ const uiControl = (function() {
     function createModal() {
         const modal = document.createElement('div');
         modal.classList.add('modal');
-        modal.addEventListener('click', () => {
-            modal.removeChild(modal.firstElementChild);
-            modal.style.display = 'none';
+        modal.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.removeChild(e.target.firstElementChild);
+                e.target.style.display = 'none';
+            }
         })
         return modal;
     }
@@ -123,16 +125,42 @@ const uiControl = (function() {
         const form = document.createElement('form');
         form.classList.add('add-task-form');
 
+        // DOM element for title
+        const divTitle = document.createElement('div');
+        divTitle.classList.add('form-data-container');
+        const titleLabel = document.createElement('label');
+        titleLabel.htmlFor = 'title';
+        titleLabel.textContent = 'Title:';
+
         const titleInput = document.createElement('input');
         titleInput.type = 'text';
+        titleInput.id = 'title';
+
+        divTitle.appendChild(titleLabel);
+        divTitle.appendChild(titleInput);
+
+        // DOM element for description
+        const divDescription = document.createElement('div');
+        divDescription.classList.add('form-data-container');
+        const descriptionLabel = document.createElement('label');
+        descriptionLabel.htmlFor = 'description';
+        descriptionLabel.textContent = 'Description:';
 
         const description = document.createElement('textarea');
+        description.id = 'description';
+
+        divDescription.appendChild(descriptionLabel);
+        divDescription.appendChild(description);
+
+        // DOM element for Save to
+        const divSaveTo = document.createElement('div');
+        divSaveTo.classList.add('form-data-container');
 
         const saveToHeading = document.createElement('p');
         saveToHeading.textContent = 'Save to:'
 
         const saveToRadioBtnGroup = document.createElement('div');
-        saveToHeading.classList.add('save-to-radio-btn-group');
+        saveToRadioBtnGroup.classList.add('save-to-radio-btn-group');
 
         projectNames.forEach(name => {
             const radioInput = document.createElement('input');
@@ -147,6 +175,14 @@ const uiControl = (function() {
             saveToRadioBtnGroup.appendChild(radioInput);
             saveToRadioBtnGroup.appendChild(label);
         });
+
+        divSaveTo.appendChild(saveToHeading);
+        divSaveTo.appendChild(saveToRadioBtnGroup);
+
+        // DOM element for priority
+
+        const divPriority = document.createElement('div');
+        divPriority.classList.add('form-data-container');
 
         const priorityHeading = document.createElement('p');
         priorityHeading.textContent = 'Priority:'
@@ -166,20 +202,44 @@ const uiControl = (function() {
             label.textContent = name;
             priorityRadioBtnGroup.appendChild(radioInput);
             priorityRadioBtnGroup.appendChild(label);
-        })
+        });
+
+        divPriority.appendChild(priorityHeading);
+        divPriority.appendChild(priorityRadioBtnGroup);
+
+        // DOM element for due date
+        const divDueDate = document.createElement('div');
+        divDueDate.classList.add('form-data-container');
+        const dueDateLabel = document.createElement('label');
+        dueDateLabel.htmlFor = 'due-date';
+        dueDateLabel.textContent = 'Due Date:';
 
         const calender = document.createElement('input');
         calender.classList.add('calender-due-date');
+        calender.id = 'due-date';
         calender.type = 'date';
 
+        divDueDate.appendChild(dueDateLabel);
+        divDueDate.appendChild(calender);
+
+        // Button Element
+
+        const submitTaskBtn = document.createElement('button');
+        submitTaskBtn.classList.add('submit-task');
+        submitTaskBtn.textContent = 'Add';
+
+        submitTaskBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('added');
+        })
+
         // append elements to the parent
-        form.appendChild(titleInput);
-        form.appendChild(description);
-        form.appendChild(saveToHeading);
-        form.appendChild(saveToRadioBtnGroup);
-        form.appendChild(priorityHeading);
-        form.appendChild(priorityRadioBtnGroup);
-        form.appendChild(calender);
+        form.appendChild(divTitle);
+        form.appendChild(divDescription);
+        form.appendChild(divSaveTo);
+        form.appendChild(divPriority);
+        form.appendChild(divDueDate);
+        form.appendChild(submitTaskBtn);
         modalContent.appendChild(form);
 
         return modalContent;
