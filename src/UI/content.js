@@ -34,14 +34,10 @@ function createContent() {
     addProjectBtn.textContent = 'Add Project';
 
     addProjectBtn.addEventListener('click', () => {
-        let projectName = prompt('Enter the project name.');
-        todoApp.createProject(projectName);
-
-        const projectList = document.querySelector('.project-list');
-        const parent = projectList.parentNode;
-        const lastChild = parent.lastElementChild;
-        parent.removeChild(projectList);
-        parent.insertBefore(uiControl.listProjects(), lastChild);
+        const modal = document.querySelector('.modal');
+        
+        modal.appendChild(uiControl.createAddProjectForm());
+        modal.style.display = 'block';
     })
 
 

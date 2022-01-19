@@ -78,7 +78,7 @@ body {
     margin-top: 4px;
 }
 
-.add-project-btn, .add-task-btn, .submit-task {
+.add-project-btn, .add-task-btn, .submit-btn {
     display: block;
     margin-left: auto;
     padding: 4px 12px;
@@ -132,7 +132,7 @@ form {
 form .form-data-container label, form .form-data-container p {
     display: block;
     font-size: 19px;
-    width: 120px;
+    width: 130px;
 }
 
 form .form-data-container {
@@ -140,12 +140,17 @@ form .form-data-container {
     margin-top: 12px ;
 }
 
-form .form-data-container #title, form .form-data-container #description {
+form .form-data-container #title,
+form .form-data-container #description,
+form .form-data-container #project-name {
     width: 350px;
     padding: 4px 8px;
     display: block;
     font-family: inherit;
     font-size: 19px;
+}
+form .form-data-container #project-name {
+    margin-left: 20px;
 }
 
 form .form-data-container .priority-radio-btn-group label,
@@ -155,7 +160,7 @@ form .form-data-container .save-to-radio-btn-group label {
     margin: 0 24px 0 4px;
 }
 
-.submit-task {
+.submit-btn {
     margin: 0;
     margin-top: 24px;
     padding-left: 20px;

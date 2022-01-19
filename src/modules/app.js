@@ -6,7 +6,7 @@ const todoApp = (function () {
     }
 
     function createTask(title, description, dueDate, priority) {
-        const id = '1';
+        const id = new Date().getTime();
         
         return {
             id,
@@ -225,12 +225,13 @@ const uiControl = (function() {
         // Button Element
 
         const submitTaskBtn = document.createElement('button');
-        submitTaskBtn.classList.add('submit-task');
+        submitTaskBtn.classList.add('submit-btn');
         submitTaskBtn.textContent = 'Add';
 
         submitTaskBtn.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('added');
+            handleTaskSubmission();
         })
 
         // append elements to the parent
@@ -245,11 +246,82 @@ const uiControl = (function() {
         return modalContent;
     }
 
+    function createAddProjectForm() {
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+        const form = document.createElement('form');
+
+        // DOM element for project name
+        const projectNameDiv = document.createElement('div');
+        projectNameDiv.classList.add('form-data-container');
+        const nameLabel = document.createElement('label');
+        nameLabel.htmlFor = 'project-name';
+        nameLabel.textContent = 'Project Name:';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.id = 'project-name';
+
+        projectNameDiv.appendChild(nameLabel);
+        projectNameDiv.appendChild(nameInput);
+
+        // Button Element
+
+        const submitProjectBtn = document.createElement('button');
+        submitProjectBtn.classList.add('submit-btn');
+        submitProjectBtn.textContent = 'Add';
+
+        submitProjectBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleProjectNameSubmission();
+        })
+
+        form.appendChild(projectNameDiv);
+        form.appendChild(submitProjectBtn);
+    
+        modalContent.appendChild(form);
+        return modalContent;
+    }
+
+    function handleProjectNameSubmission() {
+        const projectName = document.querySelector('#project-name').value;
+        todoApp.createProject(projectName);
+
+        const projectList = document.querySelector('.project-list');
+        const parent = projectList.parentNode;
+        const lastChild = parent.lastElementChild;
+        parent.removeChild(projectList);
+        parent.insertBefore(uiControl.listProjects(), lastChild);
+    }
+
+    function handleTaskSubmission() {
+        const title = document.querySelector('#title').value;
+        const description = document.querySelector('#description').value;
+        const inputs = document.querySelectorAll('input');
+        let dueDate;
+        let priority;
+        let projectName;
+        inputs.forEach(input => {
+            if(input.type === 'radio' && input.checked) {
+                input.name === 'priority' ? priority = input.value : projectName = input.value;
+            }
+
+            if (input.type === 'date') {
+                 dueDate = input.value;
+            }
+        });
+
+        console.log(title, description, dueDate, priority, projectName);
+        const task = todoApp.createTask(title, description, dueDate, priority);
+        todoApp.saveTask(task, projectName);
+    }
+
     return {
         displayHome,
         listProjects,
         createModal,
         createAddTaskForm,
+        createAddProjectForm,
     }
 })()
 
