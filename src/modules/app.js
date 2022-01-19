@@ -104,9 +104,92 @@ const uiControl = (function() {
         return projectUl;
     }
 
+    function createModal() {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.addEventListener('click', () => {
+            modal.removeChild(modal.firstElementChild);
+            modal.style.display = 'none';
+        })
+        return modal;
+    }
+
+    function createAddTaskForm() {
+        let projectNames = Object.keys(todoApp.returnAllProjects());
+
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+
+        const form = document.createElement('form');
+        form.classList.add('add-task-form');
+
+        const titleInput = document.createElement('input');
+        titleInput.type = 'text';
+
+        const description = document.createElement('textarea');
+
+        const saveToHeading = document.createElement('p');
+        saveToHeading.textContent = 'Save to:'
+
+        const saveToRadioBtnGroup = document.createElement('div');
+        saveToHeading.classList.add('save-to-radio-btn-group');
+
+        projectNames.forEach(name => {
+            const radioInput = document.createElement('input');
+            const label = document.createElement('label');
+            radioInput.type = 'radio';
+            radioInput.id = name;
+            radioInput.value = name;
+            radioInput.name = 'save_to';
+
+            label.htmlFor = name;
+            label.textContent = name;
+            saveToRadioBtnGroup.appendChild(radioInput);
+            saveToRadioBtnGroup.appendChild(label);
+        });
+
+        const priorityHeading = document.createElement('p');
+        priorityHeading.textContent = 'Priority:'
+
+        const priorityRadioBtnGroup = document.createElement('div');
+        priorityRadioBtnGroup.classList.add('priority-radio-btn-group');
+
+        ['high', 'normal', 'low'].forEach(name => {
+            const radioInput = document.createElement('input');
+            const label = document.createElement('label');
+            radioInput.type = 'radio';
+            radioInput.id = name;
+            radioInput.value = name;
+            radioInput.name = 'priority';
+
+            label.htmlFor = name;
+            label.textContent = name;
+            priorityRadioBtnGroup.appendChild(radioInput);
+            priorityRadioBtnGroup.appendChild(label);
+        })
+
+        const calender = document.createElement('input');
+        calender.classList.add('calender-due-date');
+        calender.type = 'date';
+
+        // append elements to the parent
+        form.appendChild(titleInput);
+        form.appendChild(description);
+        form.appendChild(saveToHeading);
+        form.appendChild(saveToRadioBtnGroup);
+        form.appendChild(priorityHeading);
+        form.appendChild(priorityRadioBtnGroup);
+        form.appendChild(calender);
+        modalContent.appendChild(form);
+
+        return modalContent;
+    }
+
     return {
         displayHome,
         listProjects,
+        createModal,
+        createAddTaskForm,
     }
 })()
 

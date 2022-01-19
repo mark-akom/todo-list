@@ -53,7 +53,19 @@ function createContent() {
     const mainDiv = document.createElement('div');
     mainDiv.classList.add('main-content');
 
+    const addTaskBtn = document.createElement('button');
+    addTaskBtn.classList.add('add-task-btn');
+    addTaskBtn.textContent = 'Add A Task';
+
+    addTaskBtn.addEventListener('click', () => {
+        const modal = document.querySelector('.modal');
+        modal.appendChild(uiControl.createAddTaskForm());
+        modal.style.display = 'block';
+    });
+
     mainDiv.appendChild(uiControl.displayHome());
+    mainDiv.appendChild(addTaskBtn);
+    mainDiv.appendChild(uiControl.createModal());
 
 
     // append the various element to their parents
