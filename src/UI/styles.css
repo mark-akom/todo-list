@@ -94,7 +94,7 @@ body {
 
 .add-task-btn {
     margin-top: 24px;
-    margin-right: 150px;
+    margin-left: 0px;
 }
 
 
@@ -165,4 +165,75 @@ form .form-data-container .save-to-radio-btn-group label {
     margin-top: 24px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+/* styling of the tasks */
+
+.task-list {
+    width: 90%;
+}
+
+.intro-heading {
+    font-weight: 500;
+    padding-bottom: 24px;
+}
+
+.task-container {
+    border: 1px solid gray;
+    width: 80%;
+    padding: 20px;
+    border-left-width: 6px;
+    border-left-color: green;
+    cursor: pointer;
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.task-title {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.task-project-name {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.task-description {
+    font-size: 18px;
+    width: 75%;
+    color: gray;
+    display: none;
+}
+
+.task-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-due-date {
+    font-size: 16px;
+}
+
+.icons {
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.delete {
+    color: red;
+}
+
+.edit {
+    color: blue;
+}
+
+.check_circle {
+    color: gray;
 }

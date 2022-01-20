@@ -18,6 +18,10 @@ function createContent() {
     linkText.forEach(text => {
         const li = document.createElement('li');
         li.textContent = text;
+
+        li.addEventListener('click', (e) => {
+            uiControl.updateTaskDisplay('all', 'all');
+        })
         navLinks.appendChild(li);
     });
 
@@ -59,7 +63,7 @@ function createContent() {
         modal.style.display = 'block';
     });
 
-    mainDiv.appendChild(uiControl.displayHome());
+    mainDiv.appendChild(uiControl.displayTask('default', 'all'));
     mainDiv.appendChild(addTaskBtn);
     mainDiv.appendChild(uiControl.createModal());
 

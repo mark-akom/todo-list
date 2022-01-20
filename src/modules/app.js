@@ -2,7 +2,14 @@
 
 const todoApp = (function () {
     const projects = {
-        defaultFolder:  [{a: 'b'}]
+        "default":  [{
+            id: '1',
+            title: 'Fix Website Bug',
+            description: 'Blah blah blah blah',
+            dueDate: '2022-01-21',
+            priority: 'high',
+            complete: false
+        }]
     }
 
     function createTask(title, description, dueDate, priority) {
@@ -63,28 +70,102 @@ const todoApp = (function () {
 })()
 
 const uiControl = (function() {
-    function checkForTask() {
+    function checkForTask(projectName, period) {
         const projects = todoApp.returnAllProjects();
         const projectNames = Object.keys(projects);
         let taskCount = 0;
+        let tasks = [];
         projectNames.forEach(name => {
-            if(projects[name].length > 0) {
-                taskCount++;
+            if(projects[name].length > 0 || projectName === name || projectName === 'all') {
+                if (period === 'all') {
+                    taskCount++;
+                    tasks = tasks.concat(projects[name]);
+                }
             }
         });
-        return taskCount;
+        return { taskCount, tasks };
     }
 
-    function displayHome() {
+    function displayTask(projectName, period) {
+        const taskList = document.createElement('div');
+        taskList.classList.add('task-list');
         const introP = document.createElement('p');
-        let taskCount = checkForTask();
+        introP.classList.add('intro-heading');
+        let { taskCount, tasks } = checkForTask(projectName, period);
         if (taskCount > 0) {
             introP.textContent = 'Some task available';
+            taskList.appendChild(introP);
+            tasks.forEach(task => {
+                const taskComponent = createTaskDisplay(task)
+                taskList.appendChild(taskComponent);
+            })
         } else {
             introP.textContent =  'Looks like you are free. Add a new task';
         }
 
-        return introP;
+
+        return taskList;
+    }
+
+    function updateTaskDisplay(projectName, period) {
+        const mainContent = document.querySelector('.main-content');
+        const taskContainer = document.querySelector('.task-list');
+        // console.log(tasksList);
+
+        mainContent.removeChild(taskContainer);
+        console.log('deleted')
+        const tasks = displayTask(projectName, 'all');
+        mainContent.insertBefore(tasks, mainContent.firstElementChild);
+        console.log('added');
+    }
+
+    function createTaskDisplay(task) {
+        const taskContainer = document.createElement('div');
+        taskContainer.classList.add('task-container');
+
+        const taskHeader = document.createElement('div');
+        taskHeader.classList.add('task-header');
+
+        const taskFooter = document.createElement('div')
+        taskFooter.classList.add('task-footer');
+
+        const taskTitle = document.createElement('h2');
+        taskTitle.classList.add('task-title');
+        taskTitle.textContent = task.title;
+
+        const taskProjectName = document.createElement('p')
+        taskProjectName.classList.add('task-project-name');
+        taskProjectName.textContent = 'Default';
+
+        taskHeader.appendChild(taskTitle);
+        taskHeader.appendChild(taskProjectName);
+
+        const taskDescription = document.createElement('p');
+        taskDescription.classList.add('task-description');
+        taskDescription.textContent = task.description;
+
+        const taskDueDate = document.createElement('p');
+        taskDueDate.classList.add('task-due-date');
+        taskDueDate.textContent = `Due: ${task.dueDate}`;
+
+        const iconsContainer = document.createElement('div');
+        iconsContainer.classList.add('icons-container');
+
+        ['check_circle' ,'edit', 'delete'].forEach(iconName => {
+            const span = document.createElement('span');
+            span.classList.add('material-icons-outlined', 'icons', iconName);
+            span.textContent = iconName;
+            iconsContainer.appendChild(span);
+        });  
+        
+        taskFooter.appendChild(taskDueDate);
+        taskFooter.appendChild(iconsContainer);
+
+        taskContainer.appendChild(taskHeader);
+        taskContainer.appendChild(taskDescription);
+        taskContainer.appendChild(taskFooter);
+
+        return taskContainer;
     }
 
     function listProjects() {
@@ -95,7 +176,7 @@ const uiControl = (function() {
         projectUl.classList.add('project-list');
 
         projectNames.forEach(name => {
-            if (name !== 'defaultFolder') {
+            if (name !== 'default') {
                 const li = document.createElement('li');
                 li.textContent = name;
                 projectUl.appendChild(li);
@@ -314,14 +395,16 @@ const uiControl = (function() {
         console.log(title, description, dueDate, priority, projectName);
         const task = todoApp.createTask(title, description, dueDate, priority);
         todoApp.saveTask(task, projectName);
+        updateTaskDisplay(projectName, 'all');
     }
 
     return {
-        displayHome,
+        displayTask,
         listProjects,
         createModal,
         createAddTaskForm,
         createAddProjectForm,
+        updateTaskDisplay,
     }
 })()
 
