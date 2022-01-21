@@ -15,7 +15,7 @@ body {
 /* styling of the header section */
 
 .app-header {
-    border: 1px solid blue;
+    border-bottom: 2px solid #bde3e1;
     height: 10vh;
     display: flex;
     align-items: center;
@@ -25,21 +25,21 @@ body {
     font-weight: 600;
     font-size: 32px;
     padding-left: 40px;
+    color: #24A19C;
 }
 
 /* styling of the content section */
 
 .content-body {
-    border: 1px solid;
     display: flex;
     height: 90vh;
 }
 
 .app-sidebar {
-    border: 1px solid green;
-    flex-basis: 22%;
+    flex-basis: 20%;
     padding-left: 40px;
     padding-top: 20px;
+    background-color: #e9f6f5;
 }
 
 .nav-links li{
@@ -52,8 +52,7 @@ body {
 }
 
 .main-content {
-    border: 1px solid red;
-    flex-basis: 78%;
+    flex-basis: 80%;
     padding-top: 30px;
     padding-left: 40px;
     overflow: scroll;
@@ -82,15 +81,16 @@ body {
 .add-project-btn, .add-task-btn, .submit-btn {
     display: block;
     margin-left: auto;
-    padding: 4px 12px;
+    padding: 6px 12px;
     font-family: inherit;
-    font-size: 16px;
-    background-color: transparent;
-    border: 1px solid gray;
+    font-size: 18px;
+    border: none;
     border-radius: 4px;
     margin-top: 12px;
-    margin-right: 12px;
+    margin-right: 24px;
     cursor: pointer;
+    background-color: #24A19C;
+    color: white;
 }
 
 .add-task-btn {
@@ -149,7 +149,17 @@ form .form-data-container #project-name {
     display: block;
     font-family: inherit;
     font-size: 19px;
+    border: 1px solid #24A19C;
 }
+
+form .form-data-container #title:focus,
+form .form-data-container #description:focus,
+form .form-data-container #project-name:focus,
+.calender-due-date {
+    border: 1px solid #24A19C;
+    outline: none;
+} 
+
 form .form-data-container #project-name {
     margin-left: 20px;
 }
@@ -159,6 +169,11 @@ form .form-data-container .save-to-radio-btn-group label {
     display: inline-block;
     width: auto;
     margin: 0 24px 0 4px;
+}
+
+.calender-due-date {
+    font-size: 18px;
+    padding: 4px;
 }
 
 .submit-btn {
@@ -180,13 +195,14 @@ form .form-data-container .save-to-radio-btn-group label {
 }
 
 .task-container {
-    border: 1px solid gray;
+    border: 1px solid #cccccc;
     width: 80%;
     padding: 20px;
     border-left-width: 6px;
     border-left-color: green;
     cursor: pointer;
     margin-bottom: 8px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
 }
 
 .task-header {
@@ -204,12 +220,13 @@ form .form-data-container .save-to-radio-btn-group label {
 .task-project-name {
     font-size: 18px;
     font-weight: 400;
+    color: #24A19C;
 }
 
 .task-description {
     font-size: 18px;
     width: 75%;
-    color: gray;
+    color: #333333;
     display: none;
 }
 
@@ -225,6 +242,7 @@ form .form-data-container .save-to-radio-btn-group label {
 
 .task-due-date {
     font-size: 16px;
+    color: #24A19C;
 }
 
 .icons {

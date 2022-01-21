@@ -1,7 +1,8 @@
 // this file will be the application logic
 
 const todoApp = (function () {
-    const projects = {
+    // hold all projectFolders or projectNames and their task
+    const projects = { 
         "Default":  [{
             id: '1',
             title: 'Fix Website Bug',
@@ -41,7 +42,7 @@ const todoApp = (function () {
         projects[name] = []
     }
 
-    function updateStatus(projectName, taskId) {
+    function updateStatus(projectName, taskId) { // change the state of a project
         const project = projects[projectName];
         let task = project.filter(item => item.id === taskId)[0];
         task.complete = !(task.complete);
@@ -55,7 +56,8 @@ const todoApp = (function () {
     }
 
     function editTask(oldTask, taskObj) {
-        if (oldTask.projectName !== taskObj.projectName) {
+        // taskObj is the edited task
+        if (oldTask.projectName !== taskObj.projectName) { 
             const newtask = {};
             Object.assign(newtask, oldTask, taskObj);
             projects[taskObj.projectName].push(newtask);
@@ -126,7 +128,6 @@ const uiControl = (function() {
     function updateTaskDisplay(projectName, period) {
         const mainContent = document.querySelector('.main-content');
         const taskContainer = document.querySelector('.task-list');
-        // console.log(tasksList);
 
         mainContent.removeChild(taskContainer);
         const tasks = displayTask(projectName, period);
@@ -137,11 +138,11 @@ const uiControl = (function() {
         const taskContainer = document.createElement('div');
         taskContainer.classList.add('task-container');
         if (task.priority === 'high') {
-            taskContainer.style.borderLeftColor = 'orange'
+            taskContainer.style.borderLeftColor = 'red'
         } else if (task.priority === 'normal') {
-            taskContainer.style.borderLeftColor = 'blue';
+            taskContainer.style.borderLeftColor = 'orange';
         } else {
-            taskContainer.style.borderLeftColor = 'pink';
+            taskContainer.style.borderLeftColor = 'green';
         }
 
         const taskHeader = document.createElement('div');
@@ -178,7 +179,9 @@ const uiControl = (function() {
             span.textContent = iconName;
             span.setAttribute('data-project', task.projectName);
             span.setAttribute('data-id', task.id);
+            span.setAttribute('title', iconName);
             if (iconName === 'check_circle') {
+                span.setAttribute('title', 'mark complete')
                 if (task.complete) {
                     span.style.color = 'green';
                 }
@@ -247,6 +250,7 @@ const uiControl = (function() {
     }
 
     function createModal() {
+        // a modal to display the form
         const modal = document.createElement('div');
         modal.classList.add('modal');
         modal.addEventListener('click', (e) => {
@@ -259,6 +263,7 @@ const uiControl = (function() {
     }
 
     function createAddTaskForm(editing, task) {
+        // create form for entering task info used for creating new task and also editing a task
         let projectNames = Object.keys(todoApp.returnAllProjects());
 
         const modalContent = document.createElement('div');
@@ -442,6 +447,7 @@ const uiControl = (function() {
     }
 
     function handleProjectNameSubmission() {
+        // handles the submission of project name
         const projectName = document.querySelector('#project-name').value;
 
         if (projectName === '') {
@@ -461,6 +467,7 @@ const uiControl = (function() {
     }
 
     function handleTaskSubmission(editing, taskObj) {
+        // handles the submission of a new task or editing of a task
         const title = document.querySelector('#title').value;
         const description = document.querySelector('#description').value;
         const inputs = document.querySelectorAll('input');

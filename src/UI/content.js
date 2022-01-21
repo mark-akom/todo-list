@@ -1,4 +1,3 @@
-import { todoApp } from "../modules/app";
 import { uiControl } from "../modules/app";
 
 function createContent() {
@@ -39,7 +38,6 @@ function createContent() {
 
     addProjectBtn.addEventListener('click', () => {
         const modal = document.querySelector('.modal');
-        
         modal.appendChild(uiControl.createAddProjectForm());
         modal.style.display = 'block';
     })
