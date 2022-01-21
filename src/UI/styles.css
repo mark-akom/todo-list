@@ -56,6 +56,7 @@ body {
     flex-basis: 78%;
     padding-top: 30px;
     padding-left: 40px;
+    overflow: scroll;
 }
 
  p {
@@ -93,7 +94,7 @@ body {
 }
 
 .add-task-btn {
-    margin-top: 24px;
+    margin-top: 20px;
     margin-left: 0px;
 }
 
@@ -185,6 +186,7 @@ form .form-data-container .save-to-radio-btn-group label {
     border-left-width: 6px;
     border-left-color: green;
     cursor: pointer;
+    margin-bottom: 8px;
 }
 
 .task-header {
@@ -209,6 +211,10 @@ form .form-data-container .save-to-radio-btn-group label {
     width: 75%;
     color: gray;
     display: none;
+}
+
+.task-description-toggle {
+    display: block;
 }
 
 .task-footer {

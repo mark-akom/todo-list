@@ -2,18 +2,19 @@
 
 const todoApp = (function () {
     const projects = {
-        "default":  [{
+        "Default":  [{
             id: '1',
             title: 'Fix Website Bug',
             description: 'Blah blah blah blah',
             dueDate: '2022-01-21',
             priority: 'high',
-            complete: false
+            complete: false,
+            projectName: 'Default'
         }]
     }
 
-    function createTask(title, description, dueDate, priority) {
-        const id = new Date().getTime();
+    function createTask(title, description, dueDate, priority, projectName) {
+        const id = new Date().getTime().toString();
         
         return {
             id,
@@ -22,6 +23,7 @@ const todoApp = (function () {
             dueDate,
             priority,
             complete: false,
+            projectName
         }
     }
 
@@ -33,23 +35,17 @@ const todoApp = (function () {
         projects[projectName].push(task);
     }
 
-    // todo - functions for changing status, priority and editing
+    // todo - functions for changing status, and editing
 
     function createProject(name) {
         projects[name] = []
-        console.log(projects);
     }
 
     function updateStatus(projectName, taskId) {
         const project = projects[projectName];
         let task = project.filter(item => item.id === taskId)[0];
         task.complete = !(task.complete);
-    }
-
-    function changePriority(projectName, taskId, priority) {
-        const project = projects[projectName];
-        let task = project.filter(item => item.id === taskId)[0];
-        task.priority = priority;
+        return task.complete;
     }
 
     function deleteTask(projectName, taskId) {
@@ -58,14 +54,29 @@ const todoApp = (function () {
         console.log(project);
     }
 
+    function editTask(oldTask, taskObj) {
+        if (oldTask.projectName !== taskObj.projectName) {
+            const newtask = {};
+            Object.assign(newtask, oldTask, taskObj);
+            projects[taskObj.projectName].push(newtask);
+            projects[oldTask.projectName] = projects[oldTask.projectName].filter(item => item.id !== oldTask.id);
+        } else {
+            projects[taskObj.projectName].forEach((taskItem) => {
+                if (taskItem.id === oldTask.id) {
+                    Object.assign(taskItem, taskObj);
+                }
+            });
+        }
+    }
+
     return {
         createTask,
         returnAllProjects,
         saveTask,
         updateStatus,
-        changePriority,
         deleteTask,
         createProject,
+        editTask,
     }
 })()
 
@@ -83,7 +94,11 @@ const uiControl = (function() {
                 }
             }
         });
-        return { taskCount, tasks };
+        if (taskCount) {
+            return tasks
+        } else {
+            return tasks
+        }
     }
 
     function displayTask(projectName, period) {
@@ -91,8 +106,8 @@ const uiControl = (function() {
         taskList.classList.add('task-list');
         const introP = document.createElement('p');
         introP.classList.add('intro-heading');
-        let { taskCount, tasks } = checkForTask(projectName, period);
-        if (taskCount > 0) {
+        let tasks = checkForTask(projectName, period);
+        if (tasks.length > 0) {
             introP.textContent = 'Some task available';
             taskList.appendChild(introP);
             tasks.forEach(task => {
@@ -101,6 +116,7 @@ const uiControl = (function() {
             })
         } else {
             introP.textContent =  'Looks like you are free. Add a new task';
+            taskList.appendChild(introP);
         }
 
 
@@ -113,15 +129,20 @@ const uiControl = (function() {
         // console.log(tasksList);
 
         mainContent.removeChild(taskContainer);
-        console.log('deleted')
-        const tasks = displayTask(projectName, 'all');
+        const tasks = displayTask(projectName, period);
         mainContent.insertBefore(tasks, mainContent.firstElementChild);
-        console.log('added');
     }
 
     function createTaskDisplay(task) {
         const taskContainer = document.createElement('div');
         taskContainer.classList.add('task-container');
+        if (task.priority === 'high') {
+            taskContainer.style.borderLeftColor = 'orange'
+        } else if (task.priority === 'normal') {
+            taskContainer.style.borderLeftColor = 'blue';
+        } else {
+            taskContainer.style.borderLeftColor = 'pink';
+        }
 
         const taskHeader = document.createElement('div');
         taskHeader.classList.add('task-header');
@@ -135,7 +156,7 @@ const uiControl = (function() {
 
         const taskProjectName = document.createElement('p')
         taskProjectName.classList.add('task-project-name');
-        taskProjectName.textContent = 'Default';
+        taskProjectName.textContent = task.projectName;
 
         taskHeader.appendChild(taskTitle);
         taskHeader.appendChild(taskProjectName);
@@ -155,6 +176,13 @@ const uiControl = (function() {
             const span = document.createElement('span');
             span.classList.add('material-icons-outlined', 'icons', iconName);
             span.textContent = iconName;
+            span.setAttribute('data-project', task.projectName);
+            span.setAttribute('data-id', task.id);
+            if (iconName === 'check_circle') {
+                if (task.complete) {
+                    span.style.color = 'green';
+                }
+            }
             iconsContainer.appendChild(span);
         });  
         
@@ -164,6 +192,39 @@ const uiControl = (function() {
         taskContainer.appendChild(taskHeader);
         taskContainer.appendChild(taskDescription);
         taskContainer.appendChild(taskFooter);
+
+        taskContainer.addEventListener('click', (e) => {
+            // handle click on icons 
+            if (e.target.tagName === 'SPAN') {
+                const span = e.target;
+                const projectName = span.dataset.project;
+                const id = span.dataset.id
+                if(span.textContent === 'check_circle') {
+                    const status = todoApp.updateStatus(projectName, id);
+                    status ? span.style.color = 'green' : span.style.color = 'gray'
+                }
+
+                if(span.textContent === 'delete') {
+                    todoApp.deleteTask(projectName, id)
+                    updateTaskDisplay(projectName, 'all');
+                }
+
+                if (span.textContent === 'edit') {
+                    // get the task
+                    let tasks = todoApp.returnAllProjects()[projectName];
+                    let singleTask = tasks.filter(task => task.id === id)[0];
+                    let editing = true;
+                    const modal = document.querySelector('.modal');
+        
+                    modal.appendChild(createAddTaskForm(editing, singleTask));
+                    modal.style.display = 'block';
+                }
+
+            } else {
+                taskDescription.classList.toggle('task-description-toggle');
+            }
+
+        })
 
         return taskContainer;
     }
@@ -176,7 +237,7 @@ const uiControl = (function() {
         projectUl.classList.add('project-list');
 
         projectNames.forEach(name => {
-            if (name !== 'default') {
+            if (name !== 'Default') {
                 const li = document.createElement('li');
                 li.textContent = name;
                 projectUl.appendChild(li);
@@ -197,7 +258,7 @@ const uiControl = (function() {
         return modal;
     }
 
-    function createAddTaskForm() {
+    function createAddTaskForm(editing, task) {
         let projectNames = Object.keys(todoApp.returnAllProjects());
 
         const modalContent = document.createElement('div');
@@ -216,6 +277,8 @@ const uiControl = (function() {
         const titleInput = document.createElement('input');
         titleInput.type = 'text';
         titleInput.id = 'title';
+        titleInput.required
+        editing ? titleInput.value =  task.title : titleInput.value = '';
 
         divTitle.appendChild(titleLabel);
         divTitle.appendChild(titleInput);
@@ -229,6 +292,7 @@ const uiControl = (function() {
 
         const description = document.createElement('textarea');
         description.id = 'description';
+        editing ? description.value = task.description : description.value = '';
 
         divDescription.appendChild(descriptionLabel);
         divDescription.appendChild(description);
@@ -250,6 +314,12 @@ const uiControl = (function() {
             radioInput.id = name;
             radioInput.value = name;
             radioInput.name = 'save_to';
+
+            if (editing) {
+                if (name === task.projectName) {
+                    radioInput.checked = true
+                }
+            }
 
             label.htmlFor = name;
             label.textContent = name;
@@ -279,6 +349,12 @@ const uiControl = (function() {
             radioInput.value = name;
             radioInput.name = 'priority';
 
+            if (editing) {
+                if (name === task.priority) {
+                    radioInput.checked = true
+                }
+            }
+
             label.htmlFor = name;
             label.textContent = name;
             priorityRadioBtnGroup.appendChild(radioInput);
@@ -300,6 +376,8 @@ const uiControl = (function() {
         calender.id = 'due-date';
         calender.type = 'date';
 
+        editing ? calender.value = task.dueDate : calender.value = '2022-01-21';
+
         divDueDate.appendChild(dueDateLabel);
         divDueDate.appendChild(calender);
 
@@ -307,12 +385,11 @@ const uiControl = (function() {
 
         const submitTaskBtn = document.createElement('button');
         submitTaskBtn.classList.add('submit-btn');
-        submitTaskBtn.textContent = 'Add';
+        editing ? submitTaskBtn.textContent = 'Save Edit' : submitTaskBtn.textContent = 'Add New Task';
 
         submitTaskBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('added');
-            handleTaskSubmission();
+            handleTaskSubmission(editing, task);
         })
 
         // append elements to the parent
@@ -366,7 +443,15 @@ const uiControl = (function() {
 
     function handleProjectNameSubmission() {
         const projectName = document.querySelector('#project-name').value;
+
+        if (projectName === '') {
+            alert('Enter all field(s)');
+            return
+        }
+
         todoApp.createProject(projectName);
+        document.querySelector('#project-name').value = '';
+        closeModal();
 
         const projectList = document.querySelector('.project-list');
         const parent = projectList.parentNode;
@@ -375,7 +460,7 @@ const uiControl = (function() {
         parent.insertBefore(uiControl.listProjects(), lastChild);
     }
 
-    function handleTaskSubmission() {
+    function handleTaskSubmission(editing, taskObj) {
         const title = document.querySelector('#title').value;
         const description = document.querySelector('#description').value;
         const inputs = document.querySelectorAll('input');
@@ -392,10 +477,26 @@ const uiControl = (function() {
             }
         });
 
-        console.log(title, description, dueDate, priority, projectName);
-        const task = todoApp.createTask(title, description, dueDate, priority);
-        todoApp.saveTask(task, projectName);
+        if (title === '' || description === '' || priority == undefined || projectName == undefined || dueDate == '') {
+            alert('Enter all field(s)');
+            return
+        }
+        
+        if (editing) {
+            const editedTask = { title, description, dueDate, priority, projectName }
+            todoApp.editTask(taskObj, editedTask);
+        } else {
+            const task = todoApp.createTask(title, description, dueDate, priority, projectName);
+            todoApp.saveTask(task, projectName);
+        }
         updateTaskDisplay(projectName, 'all');
+        closeModal();
+    }
+
+    function closeModal() {
+        const modal = document.querySelector('.modal');
+        modal.removeChild(modal.firstElementChild);
+        modal.style.display = 'none';
     }
 
     return {
