@@ -1,8 +1,10 @@
 // this file will be the application logic
 
 const appDataStorage = (function() {
-    localStorage.setItem('appData', JSON.stringify({"Default": []}));
-
+    // check if appData is in the local storage
+    if (!(JSON.parse(localStorage.getItem('appData')))) {
+        localStorage.setItem('appData', JSON.stringify({"Default": []}));
+    }
     function returnProjects() {
         let appProjects = localStorage.getItem('appData');
         appProjects = JSON.parse(appProjects);
@@ -45,7 +47,6 @@ const todoApp = (function () {
         const proj = appDataStorage.returnProjects();
         proj[projectName].push(task);
         appDataStorage.saveData(proj);
-        console.log(task);
     }
 
     function createProject(name) {
