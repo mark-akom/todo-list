@@ -9,3 +9,4 @@ const appBody = document.querySelector('#app-body');
 
 appBody.appendChild(createTopBar());
 appBody.appendChild(createContent());
+

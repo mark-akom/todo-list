@@ -1,18 +1,27 @@
 // this file will be the application logic
 
+const appDataStorage = (function() {
+    localStorage.setItem('appData', JSON.stringify({"Default": []}));
+
+    function returnProjects() {
+        let appProjects = localStorage.getItem('appData');
+        appProjects = JSON.parse(appProjects);
+        return appProjects;
+    }
+
+    function saveData(appProjects) {
+        localStorage.setItem('appData', JSON.stringify(appProjects));
+    }
+
+    return {
+        returnProjects,
+        saveData,
+    }
+})()
+
 const todoApp = (function () {
     // hold all projectFolders or projectNames and their task
-    const projects = { 
-        "Default":  [{
-            id: '1',
-            title: 'Fix Website Bug',
-            description: 'Blah blah blah blah',
-            dueDate: '2022-01-21',
-            priority: 'high',
-            complete: false,
-            projectName: 'Default'
-        }]
-    }
+    // const projects = appDataStorage.returnProjects();
 
     function createTask(title, description, dueDate, priority, projectName) {
         const id = new Date().getTime().toString();
@@ -29,46 +38,53 @@ const todoApp = (function () {
     }
 
     function returnAllProjects() {
-        return projects
+        return appDataStorage.returnProjects();
     }
 
     function saveTask(task, projectName = 'defaultFolder') {
-        projects[projectName].push(task);
+        const proj = appDataStorage.returnProjects();
+        proj[projectName].push(task);
+        appDataStorage.saveData(proj);
     }
 
-    // todo - functions for changing status, and editing
-
     function createProject(name) {
-        projects[name] = []
+        const proj = appDataStorage.returnProjects();
+        proj[name] = [];
+        appDataStorage.saveData(proj);
     }
 
     function updateStatus(projectName, taskId) { // change the state of a project
-        const project = projects[projectName];
+        let proj = appDataStorage.returnProjects();
+        const project = proj[projectName];
         let task = project.filter(item => item.id === taskId)[0];
         task.complete = !(task.complete);
+        appDataStorage.saveData(proj);
         return task.complete;
     }
 
     function deleteTask(projectName, taskId) {
-        let project = projects[projectName];
-        projects[projectName] = project.filter(item => item.id !== taskId);   
-        console.log(project);
+        const proj = appDataStorage.returnProjects();
+        let project = proj[projectName];
+        proj[projectName] = project.filter(item => item.id !== taskId);
+        appDataStorage.saveData(proj);
     }
 
     function editTask(oldTask, taskObj) {
+        const proj = appDataStorage.returnProjects();
         // taskObj is the edited task
         if (oldTask.projectName !== taskObj.projectName) { 
             const newtask = {};
             Object.assign(newtask, oldTask, taskObj);
-            projects[taskObj.projectName].push(newtask);
-            projects[oldTask.projectName] = projects[oldTask.projectName].filter(item => item.id !== oldTask.id);
+            proj[taskObj.projectName].push(newtask);
+            proj[oldTask.projectName] = proj[oldTask.projectName].filter(item => item.id !== oldTask.id);
         } else {
-            projects[taskObj.projectName].forEach((taskItem) => {
+            proj[taskObj.projectName].forEach((taskItem) => {
                 if (taskItem.id === oldTask.id) {
                     Object.assign(taskItem, taskObj);
                 }
             });
         }
+        appDataStorage.saveData(proj);
     }
 
     return {
