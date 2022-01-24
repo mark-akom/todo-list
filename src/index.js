@@ -1,4 +1,3 @@
-import { todoApp } from "./modules/app";
 import createTopBar from './UI/navbar';
 import createContent from "./UI/content";
 
