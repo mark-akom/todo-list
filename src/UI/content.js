@@ -66,7 +66,7 @@ function createContent() {
         modal.style.display = 'block';
     });
 
-    mainDiv.appendChild(uiControl.displayTask('default', 'all'));
+    mainDiv.appendChild(uiControl.displayTask('all', 'all'));
     mainDiv.appendChild(addTaskBtn);
     mainDiv.appendChild(uiControl.createModal());
 

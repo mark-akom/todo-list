@@ -106,8 +106,13 @@ const uiControl = (function() {
         let taskCount = 0;
         let tasks = [];
         projectNames.forEach(name => {
-            if(projects[name].length > 0 || projectName === name || projectName === 'all') {
-                if (period === 'all') {
+            if(projects[name].length > 0) {
+                if (period === 'all' && projectName === name) {
+                    taskCount++;
+                    tasks = tasks.concat(projects[name]);
+                }
+
+                if (period === 'all' && projectName === 'all') {
                     taskCount++;
                     tasks = tasks.concat(projects[name]);
                 }
@@ -226,7 +231,7 @@ const uiControl = (function() {
 
                 if(span.textContent === 'delete') {
                     todoApp.deleteTask(projectName, id)
-                    updateTaskDisplay(projectName, 'all');
+                    updateTaskDisplay('all', 'all');
                 }
 
                 if (span.textContent === 'edit') {
@@ -263,6 +268,11 @@ const uiControl = (function() {
                 const span  = document.createElement('span');
                 span.classList.add('material-icons-outlined');
                 span.textContent = 'bookmark';
+
+                li.addEventListener('click', (e) => {
+                    updateTaskDisplay(name, 'all');
+                })
+
                 li.appendChild(span);
                 li.appendChild(liText);
                 projectUl.appendChild(li);
@@ -518,7 +528,7 @@ const uiControl = (function() {
             const task = todoApp.createTask(title, description, dueDate, priority, projectName);
             todoApp.saveTask(task, projectName);
         }
-        updateTaskDisplay(projectName, 'all');
+        updateTaskDisplay('all', 'all');
         closeModal();
     }
 

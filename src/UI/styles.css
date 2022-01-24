@@ -89,6 +89,7 @@ body {
     margin-top: 4px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .project-list li span {
