@@ -45,6 +45,7 @@ const todoApp = (function () {
         const proj = appDataStorage.returnProjects();
         proj[projectName].push(task);
         appDataStorage.saveData(proj);
+        console.log(task);
     }
 
     function createProject(name) {
@@ -258,7 +259,12 @@ const uiControl = (function() {
         projectNames.forEach(name => {
             if (name !== 'Default') {
                 const li = document.createElement('li');
-                li.textContent = name;
+                const liText = document.createTextNode(name);
+                const span  = document.createElement('span');
+                span.classList.add('material-icons-outlined');
+                span.textContent = 'bookmark';
+                li.appendChild(span);
+                li.appendChild(liText);
                 projectUl.appendChild(li);
             }
         })
@@ -397,7 +403,7 @@ const uiControl = (function() {
         calender.id = 'due-date';
         calender.type = 'date';
 
-        editing ? calender.value = task.dueDate : calender.value = '2022-01-21';
+        editing ? calender.value = task.dueDate : calender.value = '';
 
         divDueDate.appendChild(dueDateLabel);
         divDueDate.appendChild(calender);

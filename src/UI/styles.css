@@ -46,9 +46,19 @@ body {
     list-style: none;
     font-size: 19px;
     padding: 8px 0;
+    padding-left: 16px;
     font-weight: 400;
     cursor: pointer;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    width: 70%;
+}
+
+
+.nav-links li span {
+    margin-right: 8px;
+    color: #24A19C;
 }
 
 .main-content {
@@ -69,13 +79,22 @@ body {
 
 .project-list {
     padding-left: 16px;
+    padding-top: 4px;
     list-style: none;
 }
 
 .project-list li {
-    font-size: 17px;
+    font-size: 18px;
     padding: 4px;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.project-list li span {
+    font-size: 18px;
+    color: #24A19C;
+    margin-right: 8px;
 }
 
 .add-project-btn, .add-task-btn, .submit-btn {

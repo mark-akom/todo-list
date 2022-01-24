@@ -16,7 +16,12 @@ function createContent() {
     // creating links for the nav
     linkText.forEach(text => {
         const li = document.createElement('li');
-        li.textContent = text;
+        const liText = document.createTextNode(text);
+        const span = document.createElement('span');
+        span.classList.add('material-icons-outlined');
+        span.textContent = text.toLowerCase();
+        li.appendChild(span);
+        li.appendChild(liText);
 
         li.addEventListener('click', (e) => {
             uiControl.updateTaskDisplay('all', 'all');
